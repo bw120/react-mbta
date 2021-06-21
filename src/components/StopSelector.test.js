@@ -1,6 +1,6 @@
 // import { render, screen } from "@testing-library/react";
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router, Route, MemoryRouter } from "react-router-dom";
 import StopSelector from "./StopSelector";
@@ -177,6 +177,69 @@ const mockLines = [
   },
 ];
 
+const mockStops = [
+    {
+      "attributes": {
+        "address": "Alewife Brook Pkwy and Cambridge Park Dr, Cambridge, MA 02140",
+        "at_street": null,
+        "description": null,
+        "latitude": 42.395428,
+        "location_type": 1,
+        "longitude": -71.142483,
+        "municipality": "Cambridge",
+        "name": "Alewife",
+        "on_street": null,
+        "platform_code": null,
+        "platform_name": null,
+        "vehicle_type": null,
+        "wheelchair_boarding": 1
+      },
+      "id": "place-alfcl",
+      "links": { "self": "/stops/place-alfcl" },
+      "relationships": {
+        "child_stops": {},
+        "connecting_stops": {},
+        "facilities": {
+          "links": { "related": "/facilities/?filter[stop]=place-alfcl" }
+        },
+        "parent_station": { "data": null },
+        "recommended_transfers": {},
+        "zone": { "data": null }
+      },
+      "type": "stop"
+    },
+    {
+      "attributes": {
+        "address": "College Ave and Elm St, Somerville, MA",
+        "at_street": null,
+        "description": null,
+        "latitude": 42.39674,
+        "location_type": 1,
+        "longitude": -71.121815,
+        "municipality": "Somerville",
+        "name": "Davis",
+        "on_street": null,
+        "platform_code": null,
+        "platform_name": null,
+        "vehicle_type": null,
+        "wheelchair_boarding": 1
+      },
+      "id": "place-davis",
+      "links": { "self": "/stops/place-davis" },
+      "relationships": {
+        "child_stops": {},
+        "connecting_stops": {},
+        "facilities": {
+          "links": { "related": "/facilities/?filter[stop]=place-davis" }
+        },
+        "parent_station": { "data": null },
+        "recommended_transfers": {},
+        "zone": { "data": null }
+      },
+      "type": "stop"
+    }
+  ];
+
 function renderWithProviders(
   ui,
   {
@@ -208,4 +271,19 @@ test("StopSelector renders with a headline", () => {
 
   const headline = container.querySelector("h1");
   expect(headline.textContent).toBe("Red Line");
+});
+
+test("StopSelector calls API and renders with stops", async () => {
+  jest.spyOn(global, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({
+        data: mockStops
+      })
+    }));
+
+  const { container } = renderWithProviders(<StopSelector lines={mockLines} />);
+  await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+
+  expect(container.querySelectorAll('button').length).toBe(2);
 });
