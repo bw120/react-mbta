@@ -1,0 +1,25 @@
+.stop-selector {
+  display: flex;
+}
+
+.stop-selector-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stop-selector-panel button {
+  display: block;
+  margin: 5px 0;
+  padding: 5px 10px;
+  background: #797a7a;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+}
+
+.stop-selector-panel button:hover {
+  filter: brightness(85%);
+}

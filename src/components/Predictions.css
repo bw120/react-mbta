@@ -1,0 +1,29 @@
+.predictions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.predictions table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.predictions thead {
+  font-weight: 700;
+}
+
+.predictions th,
+.predictions td {
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.predictions td {
+  padding: 10px;
+}
+
+.predictions tbody > tr:hover {
+  background-color: #ebf6fd;
+}
